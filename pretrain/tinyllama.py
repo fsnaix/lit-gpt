@@ -38,7 +38,7 @@ logger_name = "tensorboard"
 devices = torch.cuda.device_count() or 1
 
 # Hyperparameters
-global_batch_size = 512
+global_batch_size = 128
 learning_rate = 4e-4
 micro_batch_size = 4
 max_tokens = int(3e12)  # 3 trillion
