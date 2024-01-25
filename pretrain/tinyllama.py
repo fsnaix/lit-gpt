@@ -48,12 +48,12 @@ eval_iters = 100
 save_step_interval = 1000
 eval_step_interval = 1000
 
-weight_decay = 1e-1
+weight_decay = 1e-6
 beta1 = 0.9
 beta2 = 0.95
 grad_clip = 1.0
 decay_lr = True
-min_lr = 4e-5
+min_lr = 1e-3
 
 batch_size = global_batch_size // devices
 gradient_accumulation_iters = batch_size // micro_batch_size
