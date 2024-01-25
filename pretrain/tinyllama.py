@@ -32,8 +32,8 @@ from lit_gpt.utils import CycleIterator, chunked_cross_entropy, num_parameters
 
 # System settings
 model_name = "tiny-llama-1.1b"
-name = "lit-tiny-llama-1.1b"
-out_dir = Path(os.getenv("LIGHTNING_ARTIFACTS_DIR", "out")) / name
+name = "VN_TinyLlama-1.1b"
+out_dir = Path("VN_TinyLlama") / name
 logger_name = "tensorboard"
 devices = torch.cuda.device_count() or 1
 
@@ -88,7 +88,7 @@ def main(fabric, resume):
     train_dataloader, val_dataloader = create_dataloaders(batch_size=micro_batch_size, block_size=config.block_size)
     train_dataloader, val_dataloader = fabric.setup_dataloaders(train_dataloader, val_dataloader)
 
-    fabric.seed_everything(3407)  # same seed for every process to init model (FSDP)
+    fabric.seed_everything(7554)  # same seed for every process to init model (FSDP)
 
     fabric.print(f"Loading model with {config.__dict__}")
     t0 = time.perf_counter()
@@ -262,28 +262,19 @@ def create_dataloaders(batch_size: int, block_size: int, num_workers: int = 8) -
 
     train_datasets = [
         StreamingDataset(
-            input_dir="data/slimpajama/train",
+            input_dir="/workspace/data/vi_corpus_train",
             item_loader=TokensLoader(block_size=effective_block_size),
             shuffle=True,
             drop_last=True,
-        ),
-        StreamingDataset(
-            input_dir="data/starcoder",
-            item_loader=TokensLoader(block_size=effective_block_size),
-            shuffle=True,
-            drop_last=True,
-        ),
+        )
     ]
 
-    # Mix SlimPajama data and Starcoder data with these proportions:
-    weights = (0.693584, 0.306416)
-    combined_dataset = CombinedStreamingDataset(datasets=train_datasets, seed=42, weights=weights)
     train_dataloader = StreamingDataLoader(
-        combined_dataset, batch_size=batch_size, pin_memory=True, num_workers=num_workers, drop_last=True
+        train_datasets, batch_size=batch_size, pin_memory=True, num_workers=num_workers, drop_last=True
     )
 
     val_dataset = StreamingDataset(
-        input_dir="data/slimpajama/val",
+        input_dir="/workspace/data/vi_corpus_test",
         item_loader=TokensLoader(block_size=effective_block_size),
         shuffle=True,
         # Consider setting to False, but we would lose some samples due to truncation when world size > 1
