@@ -25,8 +25,8 @@ from lit_gpt.utils import chunked_cross_entropy, estimate_flops, get_default_sup
 
 model_name = "pythia-410m-deduped"
 name = "vi_corpus"
-out_dir = Path("/workspace/out") / name
-data_dir = Path("/workspace/data") / name
+out_dir = Path("D:\AIVN\DataXinVKL\out") / name
+data_dir = Path("D:\AIVN\data") / name
 save_interval = 1000
 eval_interval = 1000
 eval_iters = 100
@@ -34,11 +34,11 @@ log_interval = 1
 
 # Hyperparameters
 learning_rate = 6e-4
-batch_size = 128
-micro_batch_size = 5
+batch_size = 8
+micro_batch_size = 4
 gradient_accumulation_steps = batch_size // micro_batch_size
 assert gradient_accumulation_steps > 0
-max_iters = 600000  # num_epochs * (epoch_size // micro_batch_size) // devices
+max_iters = 100000  # num_epochs * (epoch_size // micro_batch_size) // devices
 weight_decay = 1e-6
 beta1 = 0.9
 beta2 = 0.95
@@ -167,15 +167,15 @@ def main(devices: int = 1, precision: Optional[str] = None) -> None:
     model = LightningGPTModule(config)
     trainer.print(f"Time to instantiate model: {time.perf_counter() - t0:.02f} seconds.")
 
-    train_data = Dataset(str(data_dir / "vi_corpus_train.jsonl"), config.block_size)
-    val_data = Dataset(str(data_dir / "vi_corpus_test.jsonl"), config.block_size)
+    train_data = Dataset(str(data_dir / "train.bin"), config.block_size)
+    val_data = Dataset(str(data_dir / "val.bin"), config.block_size)
     train_dataloader = DataLoader(train_data, batch_size=micro_batch_size, num_workers=2)
     val_dataloader = DataLoader(val_data, batch_size=micro_batch_size, num_workers=2)
 
     t0 = time.perf_counter()
     trainer.fit(model, train_dataloader, val_dataloader, ckpt_path="last")
     trainer.print(f"Training time: {(time.perf_counter()-t0):.2f}s")
-    if trainer.strategy.root_device.type == "CPU":
+    if trainer.strategy.root_device.type == "CUDA":
         trainer.print(f"Memory used: {torch.cuda.max_memory_allocated() / 1e9:.02f} GB")
 
 
