@@ -16,11 +16,11 @@ _SAFETENSORS_AVAILABLE = RequirementCache("safetensors")
 
 
 def download_from_hub(
-    repo_id: Optional[str] = None,
+    repo_id: Optional[str] = "EleutherAI/pythia-410m-deduped",
     access_token: Optional[str] = os.getenv("HF_TOKEN"),
     from_safetensors: bool = False,
     tokenizer_only: bool = False,
-    checkpoint_dir: Path = Path("checkpoints"),
+    checkpoint_dir: Path = Path("D:\AIVN\checkpoints"),
 ) -> None:
     if repo_id is None:
         from lit_gpt.config import configs

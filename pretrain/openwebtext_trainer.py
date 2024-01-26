@@ -23,8 +23,8 @@ from lit_gpt import Config
 from lit_gpt.model import GPT, Block
 from lit_gpt.utils import chunked_cross_entropy, estimate_flops, get_default_supported_precision
 
-model_name = "pythia-70m"
-name = "openwebtext"
+model_name = "pythia-410m-deduped"
+name = "vi_corpus"
 out_dir = Path("out") / name
 data_dir = Path("data") / name
 save_interval = 1000
