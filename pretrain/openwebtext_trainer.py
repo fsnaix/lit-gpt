@@ -25,7 +25,7 @@ from lit_gpt.utils import chunked_cross_entropy, estimate_flops, get_default_sup
 
 model_name = "pythia-410m-deduped"
 name = "vi_corpus"
-out_dir = Path("out") / name
+out_dir = Path("/workspace/out") / name
 data_dir = Path("/workspace/data") / name
 save_interval = 1000
 eval_interval = 1000
