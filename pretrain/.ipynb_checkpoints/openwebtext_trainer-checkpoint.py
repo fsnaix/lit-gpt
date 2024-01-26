@@ -23,7 +23,7 @@ from lit_gpt import Config
 from lit_gpt.model import GPT, Block
 from lit_gpt.utils import chunked_cross_entropy, estimate_flops, get_default_supported_precision
 
-model_name = "pythia-410m-deduped"
+model_name = "pythia-1b-deduped"
 name = "vi_corpus"
 out_dir = Path("out") / name
 data_dir = Path("/workspace/data") / name

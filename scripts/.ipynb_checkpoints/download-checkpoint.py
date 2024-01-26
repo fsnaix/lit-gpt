@@ -16,7 +16,7 @@ _SAFETENSORS_AVAILABLE = RequirementCache("safetensors")
 
 
 def download_from_hub(
-    repo_id: Optional[str] = "EleutherAI/pythia-410m-deduped",
+    repo_id: Optional[str] = None,
     access_token: Optional[str] = os.getenv("HF_TOKEN"),
     from_safetensors: bool = False,
     tokenizer_only: bool = False,
