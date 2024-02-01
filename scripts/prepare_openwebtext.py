@@ -18,8 +18,8 @@ from lit_gpt import Tokenizer
 
 
 def prepare(
-    destination_path: Path = Path("D:\AIVN\data"),
-    checkpoint_dir: Path = Path("D:\AIVN\checkpoints\EleutherAI\pythia-410m-deduped"),
+    destination_path: Path = Path("/workspace/data"),
+    checkpoint_dir: Path = Path("/workspace/checkpoints/EleutherAI/pythia-410m-deduped"),
     seed: int = 7554,
     test_size: Union[float, int, None] = 0.0005,
 ) -> None:
@@ -31,7 +31,7 @@ def prepare(
 
     # number of workers in .map() call
     # good number to use is ~order number of cpu cores // 2
-    num_proc = os.cpu_count() // 2
+    num_proc = os.cpu_count() - 4
 
     # number of workers in load_dataset() call
     # best number might be different from num_proc above as it also depends on HW speed.
@@ -39,7 +39,7 @@ def prepare(
     num_proc_load_dataset = num_proc
 
     # takes 54GB in huggingface .cache dir, about 8M documents (8,013,769)
-    dataset = load_dataset("D:\\AIVN\\vi_corpus", num_proc=num_proc_load_dataset, cache_dir="E://Temp//huggingface")
+    dataset = load_dataset("/workspace/vi_corpus", num_proc=num_proc_load_dataset)
 
     # owt by default only contains the 'train' split, so create a test split
     split_dataset = dataset["train"].train_test_split(test_size=test_size, seed=seed, shuffle=True)
