@@ -39,7 +39,7 @@ def prepare(
     num_proc_load_dataset = num_proc
 
     # takes 54GB in huggingface .cache dir, about 8M documents (8,013,769)
-    dataset = load_dataset("D:\\AIVN\\DataXinVKL\\vi_corpus", num_proc=num_proc_load_dataset, cache_dir="E://Temp//huggingface")
+    dataset = load_dataset("D:\\AIVN\\vi_corpus", num_proc=num_proc_load_dataset, cache_dir="E://Temp//huggingface")
 
     # owt by default only contains the 'train' split, so create a test split
     split_dataset = dataset["train"].train_test_split(test_size=test_size, seed=seed, shuffle=True)
