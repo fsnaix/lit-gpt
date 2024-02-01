@@ -102,10 +102,6 @@ class Tokenizer:
             tokens = tokens + [self.eos_id]
         if max_length > 0:
             tokens = tokens[:max_length]
-            if len(tokens) < max_length:
-                tokens = tokens + [0] * (max_length - len(tokens))
-            if len(tokens) >= max_length:
-                tokens[-1] = self.eos_id
                 
         return torch.tensor(tokens, dtype=torch.int, device=device)
 
