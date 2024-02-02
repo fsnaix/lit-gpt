@@ -46,7 +46,7 @@ def prepare(
     split_dataset["val"] = split_dataset.pop("test")  # rename the test split to val
 
     def process(example):
-        ids = tokenizer.encode(example["text"]).tolist()
+        ids = tokenizer.encode(example["text"],max_length=2048).tolist()
         ids.append(tokenizer.eos_id)
 
         # ids = enc.encode_ordinary(example['text']) # encode_ordinary ignores any special tokens
